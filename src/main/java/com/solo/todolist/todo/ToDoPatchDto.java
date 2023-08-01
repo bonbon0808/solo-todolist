@@ -11,6 +11,8 @@ public class ToDoPatchDto {
 
     private String title;
 
+    private int todoOrder;
+
     private boolean completed;
 
     public void setTitleId(long titleId) {
