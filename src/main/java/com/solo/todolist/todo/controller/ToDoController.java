@@ -1,14 +1,22 @@
-package com.solo.todolist.todo;
+package com.solo.todolist.todo.controller;
 
+import com.solo.todolist.todo.mapper.ToDoMapper;
+import com.solo.todolist.todo.service.ToDoService;
+import com.solo.todolist.todo.dto.ToDoPatchDto;
+import com.solo.todolist.todo.dto.ToDoPostDto;
+import com.solo.todolist.todo.dto.ToDoResponseDto;
+import com.solo.todolist.todo.entity.ToDo;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.constraints.Min;
 import javax.validation.constraints.Positive;
 import java.util.List;
 import java.util.stream.Collectors;
 
+@CrossOrigin
 @RestController
 @RequestMapping("/todolist")
 @Validated
@@ -32,14 +40,17 @@ public class ToDoController {
         return new ResponseEntity<>(toDoMapper.todoToToDoResponseDto(response), HttpStatus.CREATED);
     }
 
-    // update 할 일 내용 수정
+    // update 할 일 내용 수정, 완료로 표시하기
     @PatchMapping("/{title-id}")
     public ResponseEntity patchList(@PathVariable("title-id") long titleId,
                                     @RequestBody ToDoPatchDto toDoPatchDto) {
         toDoPatchDto.setTitleId(titleId);
 
 
-        ToDo response = toDoService.updateToDoList(toDoMapper.todoPatchDtoTotodo(toDoPatchDto));
+        ToDo response = toDoService.updateToDoList(toDoMapper.todoPatchDtoTotodo(toDoPatchDto).getTitleId(),
+                toDoPatchDto.getTitle(),
+                toDoPatchDto.getTodoOrder(),
+                toDoPatchDto.isCompleted());
 
         return new ResponseEntity<>(toDoMapper.todoToToDoResponseDto(response), HttpStatus.OK);
     }
@@ -67,7 +78,7 @@ public class ToDoController {
 
     // delete 전체 할 일 삭제, 특정 id로 삭제
     @DeleteMapping("/{title-id}")
-    public ResponseEntity deleteList(@PathVariable("title-id") @Positive long titleId) {
+    public ResponseEntity deleteList(@PathVariable("title-id") @Min(1) long titleId) {
         System.out.println("# delete list");
         toDoService.deleteToDoList(titleId);
 

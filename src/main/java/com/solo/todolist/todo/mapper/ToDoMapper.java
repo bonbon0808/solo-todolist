@@ -1,5 +1,9 @@
-package com.solo.todolist.todo;
+package com.solo.todolist.todo.mapper;
 
+import com.solo.todolist.todo.dto.ToDoPatchDto;
+import com.solo.todolist.todo.dto.ToDoPostDto;
+import com.solo.todolist.todo.dto.ToDoResponseDto;
+import com.solo.todolist.todo.entity.ToDo;
 import org.mapstruct.Mapper;
 
 /**

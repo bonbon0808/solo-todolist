@@ -1,11 +1,11 @@
-package com.solo.todolist.todo;
+package com.solo.todolist.todo.dto;
 
 import lombok.Getter;
 
 import javax.validation.constraints.Positive;
 
 @Getter
-public class ToDoPatchDto {
+public class ToDoPostDto {
     @Positive
     private long titleId;
 
@@ -15,7 +15,6 @@ public class ToDoPatchDto {
 
     private boolean completed;
 
-    public void setTitleId(long titleId) {
-        this.titleId = titleId;
-    }
+
+
 }
