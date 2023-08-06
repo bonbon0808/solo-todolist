@@ -6,8 +6,7 @@ import javax.validation.constraints.Positive;
 
 @Getter
 public class ToDoPostDto {
-    @Positive
-    private long titleId;
+//    private long id;
 
     private String title;
 

@@ -2,9 +2,6 @@ package com.solo.todolist.todo.service;
 
 import com.solo.todolist.todo.entity.ToDo;
 import com.solo.todolist.todo.repository.ToDoRepository;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
@@ -24,20 +21,27 @@ public class ToDoService {
         return toDoRepository.save(toDo);
     }
 
-    public ToDo updateToDoList(long titleId, String title, int todoOrder, boolean completed) {
-        ToDo toDo = toDoRepository.findById(titleId)
+    public ToDo updateToDoList(long id, String title, int todoOrder, boolean completed) {
+        ToDo toDo = toDoRepository.findById(id)
                 .orElseThrow(()-> new ResponseStatusException(HttpStatus.NOT_FOUND));
 
-        toDo.setTitle(title);
-        toDo.setTodoOrder(todoOrder);
+        // title, todoOrder 필드를 요청에서 누락시킨 경우 기본값(null 혹은 0)으로 설정되게 하지 않도록 설정
+        if(title != null) {
+            toDo.setTitle(title);
+        }
+
+        if(todoOrder != 0) {
+            toDo.setTodoOrder(todoOrder);
+        }
+
         toDo.setCompleted(completed);
 
         return toDoRepository.save(toDo);
 
     }
 
-    public ToDo findToDoList(long titleId) {
-        return toDoRepository.findById(titleId)
+    public ToDo findToDoList(long id) {
+        return toDoRepository.findById(id)
                 .orElseThrow(()-> new ResponseStatusException(HttpStatus.NOT_FOUND));
 
     }
@@ -46,8 +50,8 @@ public class ToDoService {
         return toDoRepository.findAll();
     }
 
-    public void deleteToDoList(long titleId) {
-        toDoRepository.deleteById(titleId);
+    public void deleteToDoList(long id) {
+        toDoRepository.deleteById(id);
     }
 
     public void deleteToDoLists() {

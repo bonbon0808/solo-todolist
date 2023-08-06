@@ -14,9 +14,9 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.Positive;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
-@CrossOrigin
 @RestController
 @RequestMapping("/todolist")
 @Validated
@@ -40,28 +40,45 @@ public class ToDoController {
         return new ResponseEntity<>(toDoMapper.todoToToDoResponseDto(response), HttpStatus.CREATED);
     }
 
-    // update 할 일 내용 수정, 완료로 표시하기
-    @PatchMapping("/{title-id}")
-    public ResponseEntity patchList(@PathVariable("title-id") long titleId,
-                                    @RequestBody ToDoPatchDto toDoPatchDto) {
-        toDoPatchDto.setTitleId(titleId);
+//    // update 할 일 내용 수정, 완료로 표시하기
+//    // 다시 생각해보기 이대로면 하나의 값만 넣었을 경우 나머지는 초기화가 됨.
+//    @PatchMapping("/{id}")
+//    public ResponseEntity patchList(@PathVariable("id") @Min(1) long id,
+//                                    @RequestBody ToDoPatchDto toDoPatchDto) {
+//       toDoPatchDto.setId(id);
+//
+//
+//       ToDo response = toDoService.updateToDoList(toDoMapper.todoPatchDtoTotodo(toDoPatchDto).getId(),
+//               toDoPatchDto.getTitle(),
+//               toDoPatchDto.isCompleted());
+//
+//
+//
+//        return new ResponseEntity<>(toDoMapper.todoToToDoResponseDto(response), HttpStatus.OK);
+//    }
 
+    // update 할 일 내용 수정, 이미 한 일에는 완료로 표시하기
+    @PatchMapping("/{id}")
+    public ResponseEntity patchUpdateList(@PathVariable("id") @Min(1) long id,
+                                          @RequestBody ToDoPatchDto toDoPatchDto) {
+        toDoPatchDto.setId(id);
 
-        ToDo response = toDoService.updateToDoList(toDoMapper.todoPatchDtoTotodo(toDoPatchDto).getTitleId(),
+        ToDo response = toDoService.updateToDoList(toDoMapper.todoPatchDtoTotodo(toDoPatchDto).getId(),
                 toDoPatchDto.getTitle(),
                 toDoPatchDto.getTodoOrder(),
                 toDoPatchDto.isCompleted());
 
-        return new ResponseEntity<>(toDoMapper.todoToToDoResponseDto(response), HttpStatus.OK);
+        return new ResponseEntity<>(toDoMapper.todoToToDoResponseDto(response),HttpStatus.OK);
+
     }
 
     // read 전체 할일 목록 조회 , 특정 id로 조회
-    @GetMapping("/{title-id}")
-    public ResponseEntity findList(@PathVariable("title-id") long titleId) {
+    @GetMapping("/{id}")
+    public ResponseEntity findList(@PathVariable("id") @Min(1) long id) {
 
-        ToDo response = toDoService.findToDoList(titleId);
+        ToDo response = toDoService.findToDoList(id);
 
-        return new ResponseEntity<>(toDoMapper.todoToToDoResponseDto(response),HttpStatus.OK);
+        return new ResponseEntity<>(toDoMapper.todoToToDoResponseDto(response), HttpStatus.OK);
     }
 
     @GetMapping
@@ -77,17 +94,17 @@ public class ToDoController {
     }
 
     // delete 전체 할 일 삭제, 특정 id로 삭제
-    @DeleteMapping("/{title-id}")
-    public ResponseEntity deleteList(@PathVariable("title-id") @Min(1) long titleId) {
-        System.out.println("# delete list");
-        toDoService.deleteToDoList(titleId);
+    @DeleteMapping("/{id}")
+    public ResponseEntity deleteList(@PathVariable("id") @Min(1) long id) {
+
+        toDoService.deleteToDoList(id);
 
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
     @DeleteMapping()
     public ResponseEntity deleteLists() {
-        System.out.println("# delete lists");
+
         toDoService.deleteToDoLists();
 
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);

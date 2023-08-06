@@ -6,8 +6,7 @@ import javax.validation.constraints.Positive;
 
 @Getter
 public class ToDoPatchDto {
-    @Positive
-    private long titleId;
+    private long id;
 
     private String title;
 
@@ -16,7 +15,8 @@ public class ToDoPatchDto {
     private boolean completed;
 
 
-    public void setTitleId(long titleId) {
-        this.titleId = titleId;
+    public void setId(long id) {
+        this.id = id;
     }
+
 }

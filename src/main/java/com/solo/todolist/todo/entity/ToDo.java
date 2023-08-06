@@ -14,14 +14,14 @@ import javax.persistence.*;
 public class ToDo {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long titleId;
+    private long id;
 
-    @Column(nullable = false)
+    @Column
     private String title;
 
-    @Column(nullable = false)
+    @Column
     private int todoOrder;
 
-    @Column(nullable = false)
+    @Column
     private boolean completed;
 }
