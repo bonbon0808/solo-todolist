@@ -12,9 +12,7 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.constraints.Min;
-import javax.validation.constraints.Positive;
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 @RestController
@@ -40,24 +38,9 @@ public class ToDoController {
         return new ResponseEntity<>(toDoMapper.todoToToDoResponseDto(response), HttpStatus.CREATED);
     }
 
-//    // update 할 일 내용 수정, 완료로 표시하기
-//    // 다시 생각해보기 이대로면 하나의 값만 넣었을 경우 나머지는 초기화가 됨.
-//    @PatchMapping("/{id}")
-//    public ResponseEntity patchList(@PathVariable("id") @Min(1) long id,
-//                                    @RequestBody ToDoPatchDto toDoPatchDto) {
-//       toDoPatchDto.setId(id);
-//
-//
-//       ToDo response = toDoService.updateToDoList(toDoMapper.todoPatchDtoTotodo(toDoPatchDto).getId(),
-//               toDoPatchDto.getTitle(),
-//               toDoPatchDto.isCompleted());
-//
-//
-//
-//        return new ResponseEntity<>(toDoMapper.todoToToDoResponseDto(response), HttpStatus.OK);
-//    }
 
     // update 할 일 내용 수정, 이미 한 일에는 완료로 표시하기
+    // ** 생각해보기 요청에 하나의 값(필드)만 넣었을 경우 나머지는 초기화가 되는 문제. -> 서비스쪽에서 로직 수정함.
     @PatchMapping("/{id}")
     public ResponseEntity patchUpdateList(@PathVariable("id") @Min(1) long id,
                                           @RequestBody ToDoPatchDto toDoPatchDto) {
@@ -68,7 +51,7 @@ public class ToDoController {
                 toDoPatchDto.getTodoOrder(),
                 toDoPatchDto.isCompleted());
 
-        return new ResponseEntity<>(toDoMapper.todoToToDoResponseDto(response),HttpStatus.OK);
+        return new ResponseEntity<>(toDoMapper.todoToToDoResponseDto(response), HttpStatus.OK);
 
     }
 

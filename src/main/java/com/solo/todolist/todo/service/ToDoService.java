@@ -23,16 +23,17 @@ public class ToDoService {
 
     public ToDo updateToDoList(long id, String title, int todoOrder, boolean completed) {
         ToDo toDo = toDoRepository.findById(id)
-                .orElseThrow(()-> new ResponseStatusException(HttpStatus.NOT_FOUND));
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
 
-        // title, todoOrder 필드를 요청에서 누락시킨 경우 기본값(null 혹은 0)으로 설정되게 하지 않도록 설정
-        if(title != null) {
+        // 요청할 때 필드를 누락시킨 경우 기본값(null 혹은 0)으로 설정되게 하지 않도록 설정
+        if (title != null) {
             toDo.setTitle(title);
         }
 
-        if(todoOrder != 0) {
+        if (todoOrder != 0) {
             toDo.setTodoOrder(todoOrder);
         }
+
 
         toDo.setCompleted(completed);
 
@@ -42,7 +43,7 @@ public class ToDoService {
 
     public ToDo findToDoList(long id) {
         return toDoRepository.findById(id)
-                .orElseThrow(()-> new ResponseStatusException(HttpStatus.NOT_FOUND));
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
 
     }
 

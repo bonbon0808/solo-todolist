@@ -22,6 +22,7 @@ public class ToDo {
     @Column
     private int todoOrder;
 
-    @Column
+    // nullalbe = false 값을 지정해주지 않아도 필드를 누락할 경우 기본으로 false가 되는듯?
+    @Column(nullable = false)
     private boolean completed;
 }
